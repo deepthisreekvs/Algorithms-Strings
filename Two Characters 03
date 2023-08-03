@@ -1,0 +1,60 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#we imported itertools
+import itertools
+
+#
+# Complete the 'alternate' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts STRING s as parameter.
+#
+
+#written the code here too to generate the combinations of s & to get the object values of s
+def generate_combinations(s):
+    unique_chars = set(s)
+    unique_chars_combs = itertools.combinations(unique_chars, 2)
+    for comb in unique_chars_combs:
+        yield list(comb)
+
+def get_obj_value(s):
+    for i,c in enumerate(s):
+        if i==len(s)-1:
+            break
+        if(c == s[i+1]):
+            return -1
+    return len(s)
+
+def alternate(s):
+    # Write your code here
+    combs = generate_combinations(s)
+    valid_values = []
+    for comb in combs:
+        s_tmp = re.sub(rf"[^{comb[0]}{comb[1]}]",'',s)
+        
+        curr_v =  get_obj_value(s_tmp) 
+        if curr_v != -1:
+            valid_values.append(curr_v)
+
+    if len(valid_values) == 0:
+        return 0
+    return max(valid_values)
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    l = int(input().strip())
+
+    s = input()
+
+    result = alternate(s)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
