@@ -1,0 +1,44 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'separateNumbers' function below.
+#
+# The function accepts STRING s as parameter.
+#
+
+def separateNumbers(s):
+    # Write your code here
+    len_s = len(s)//2 
+    count = 0 
+    new_str = '' 
+    append_list = [] 
+    set = 0
+    for i in range(len_s):
+        count+=1
+        i = 0
+        new_str = str(s[0:count])
+        current = int(s[0:count])
+        while len(new_str)<len(s):
+            current = current +1
+            new_str = new_str + str(current)
+        append_list.append(new_str)
+        if new_str == s:
+            print('YES',new_str[:count])
+            set = 1
+            break
+    if set==0:
+        print('NO')
+
+if __name__ == '__main__':
+    q = int(input().strip())
+
+    for q_itr in range(q):
+        s = input()
+
+        separateNumbers(s)
