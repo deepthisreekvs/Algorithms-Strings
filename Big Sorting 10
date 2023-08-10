@@ -1,0 +1,54 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'bigSorting' function below.
+#
+# The function is expected to return a STRING_ARRAY.
+# The function accepts STRING_ARRAY unsorted as parameter.
+#
+
+def bigSorting(unsorted):
+    # Write your code here
+    # Create a bucket D for each D-digit string.
+    
+    buckets={}
+    for s in unsorted:
+        digits = len(s)
+        if digits in buckets:
+            buckets[digits].append(s)
+        else:
+            buckets[digits] = [s]
+    
+    # Sort the buckets ascending. e.g. from the 1-digit to the N-digit bucket
+    buckets = dict(sorted(buckets.items()))
+
+    # For each bucket, sort its value and insert them into the final output
+    output = []
+    for b in buckets:
+        buckets[b].sort()
+        output.extend(buckets[b])
+    return output
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    n = int(input().strip())
+
+    unsorted = []
+
+    for _ in range(n):
+        unsorted_item = input()
+        unsorted.append(unsorted_item)
+
+    result = bigSorting(unsorted)
+
+    fptr.write('\n'.join(result))
+    fptr.write('\n')
+
+    fptr.close()
