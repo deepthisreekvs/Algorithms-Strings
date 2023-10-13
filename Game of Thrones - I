@@ -1,0 +1,51 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'gameOfThrones' function below.
+#
+# The function is expected to return a STRING.
+# The function accepts STRING s as parameter.
+#
+
+# Define a function named gameOfThrones that takes a single argument s (a string).
+def gameOfThrones(s):
+    # Write your code here
+
+    # Initialize a variable odd_counter to keep track of characters with odd counts.
+    odd_counter = 0
+
+    # Iterate over the unique characters in the input string 's' using a set.
+    for c in set(s):
+
+        # Check if the count of the current character 'c' in 's' is odd.
+        if s.count(c) % 2 == 1:
+
+            # If it's odd, increment the odd_counter.
+            odd_counter += 1
+
+    # Check if the length of the input string s is odd and if either there is only one character with an odd count or none.
+    if len(s) % 2 == 1 and odd_counter == 1 or odd_counter == 0:
+
+        # If the conditions are met, return "YES."
+        return "YES"
+
+    # If the conditions are not met, return "NO."
+    return "NO"
+
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    s = input()
+
+    result = gameOfThrones(s)
+
+    fptr.write(result + '\n')
+
+    fptr.close()
