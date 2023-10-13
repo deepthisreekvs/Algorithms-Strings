@@ -1,0 +1,65 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'twoStrings' function below.
+#
+# The function is expected to return a STRING.
+# The function accepts following parameters:
+#  1. STRING s1
+#  2. STRING s2
+#
+
+# Define a function named "twoStrings" that takes two string inputs, s1 and s2.
+def twoStrings(s1, s2):
+
+    # Write your code here
+    # Create an empty dictionary called "mp" to store character frequency counts.
+    mp = dict()
+
+    # Iterate through each character in the first string, s1.
+    for c in s1:
+
+        # Check if the character is not already in the dictionary.
+        if c not in mp:
+
+            # If not, add it to the dictionary with a count of 1.
+            mp[c] = 1
+        else:
+
+            # If it's already in the dictionary, increment its count by 1.
+            mp[c] += 1
+
+    # Iterate through each character in the second string, s2.
+    for i in s2:
+
+        # Check if the character exists in the dictionary "mp".
+        if mp.get(i) is not None:
+
+            # If it does, return "YES" because there is a common character in both strings.
+            return "YES"
+
+    # If no common characters were found in both strings, return "NO".
+    return "NO"
+    
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    q = int(input().strip())
+
+    for q_itr in range(q):
+        s1 = input()
+
+        s2 = input()
+
+        result = twoStrings(s1, s2)
+
+        fptr.write(result + '\n')
+
+    fptr.close()
