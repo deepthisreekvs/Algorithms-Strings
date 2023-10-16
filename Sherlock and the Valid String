@@ -1,0 +1,99 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'isValid' function below.
+#
+# The function is expected to return a STRING.
+# The function accepts STRING s as parameter.
+#
+
+# Define a function named isValid that takes a string s as input.
+def isValid(s):
+    # Write your code here
+
+    # Initialize an empty set to store unique counts of characters.
+    res = set()
+
+    # Initialize a flag 'removed' to track if a character has been removed.
+    removed = False
+
+    # Loop through the unique characters in the input string s.
+    for i in set(s):
+
+        # Count how many times the current character appears in s.
+        c = s.count(i)
+
+        # Check if the 'res' set is empty.
+        if res == set():
+
+            # If it's empty, add the count 'c' to 'res'.
+            res.add(c)
+            
+        else:
+
+            # If 'res' is not empty and contains only one element, get that element.
+            if len(res) == 1:
+                element = next(iter(res))
+
+                # Check various conditions for the current count 'c' and the element in 'res'.
+                if element == 1:
+
+                    # If the element is 1 and a character has already been removed, return "NO".
+                    if removed:
+                        return "NO"
+
+                    # Set 'removed' to True since a character is being removed, and update 'res'.
+                    removed = True
+                    res = {c}
+                    
+                elif c== 1:
+
+                    # If 'c' is 1 and a character has already been removed, return "NO".
+                    if removed:
+                        return "NO"
+
+                    # Set 'removed' to True since a character is being removed.
+                    removed = True
+
+                # If the difference between the element and 'c' is -1 and a character has already been removed, return "NO".
+                elif element - c == -1:
+                    if removed:
+                        return "NO"
+
+                    # Set 'removed' to True since a character is being removed.
+                    removed = True
+                    
+                elif element - c == 1:
+
+                    # If the difference between the element and 'c' is 1 and a character has already been removed, return "NO".
+                    if removed:
+                        return "NO"
+
+                    # Set 'removed' to True since a character is being removed, and update 'res'.
+                    removed = True
+                    res = {c}
+                    
+                elif abs(element - c) >= 2:
+
+                    # If the absolute difference between the element and 'c' is 2 or more, return "NO".
+                    return "NO"
+
+    # After processing all characters, return "YES" if 'res' contains only one element, otherwise return "NO".
+    return "YES" if len(res) == 1 else "NO"
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    s = input()
+
+    result = isValid(s)
+
+    fptr.write(result + '\n')
+
+    fptr.close()
