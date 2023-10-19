@@ -1,0 +1,70 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'sherlockAndAnagrams' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts STRING s as parameter.
+#
+
+def sherlockAndAnagrams(s):
+    # Write your code here
+
+    # Initialize the result variable to 0
+    res = 0
+
+    # Initialize an empty dictionary to store substrings and their counts
+    substr = {}
+
+    # Loop through the characters of the input string 's'
+    for i in range(len(s)):
+
+        # Initialize an empty list 'st' to store characters in the current substring
+        st = []
+
+        # Nested loop to iterate through the characters of 's' starting from index 'i'
+        for j in range(i, len(s)):
+
+            # Append the current character to the 'st' list
+            st.append(str(s[j]))
+
+            # Sort the 'st' list (alphabetically)
+            st.sort()
+
+            # Join the sorted list 'st' into a single string 'sr'
+            sr = ''.join(st)
+
+            # Check if 'sr' is not already in the 'substr' dictionary
+            if(sr not in substr): substr[sr] = 0
+
+            # Increment the count of the current substring in the dictionary
+            substr[sr] += 1
+
+    # Iterate through the unique substrings in the 'substr' dictionary
+    for c in substr:
+
+        # Calculate and add the contribution to 'res' for each unique substring
+        res += int(((substr[c] - 1)*substr[c])/2)
+
+    # Return the final result
+    return res
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    q = int(input().strip())
+
+    for q_itr in range(q):
+        s = input()
+
+        result = sherlockAndAnagrams(s)
+
+        fptr.write(str(result) + '\n')
+
+    fptr.close()
