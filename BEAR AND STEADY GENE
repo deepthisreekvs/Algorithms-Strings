@@ -1,0 +1,143 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'steadyGene' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts STRING gene as parameter.
+#
+
+def steadyGene(gene):
+    # Write your code here
+
+    # Calculate the length of the gene and divide it by 4
+    vl=len(gene)//4
+
+    # Define a list of genetic elements (A, C, T, G)
+    genes=["A","C","T","G"]
+
+    # Create an empty dictionary
+    d=dict() 
+
+    # Initialize a counter variable
+    c=0
+
+    # Iterate over each genetic element (A, C, T, G)
+    for el in genes:
+
+        # Find the starting positions of the element in the gene using regular expressions
+        counter=[m.start(0) for m in re.finditer(r'(?=(' + el + '))', gene)]
+
+        # Calculate the difference between the expected count (vl) and the actual count of the elemen
+        diff = vl - len(counter) 
+
+        # If there is an excess of elements, store the positions in the dictionary
+
+        # Check if there are more occurrences of the current genetic element (el) in the gene
+        if diff < 0:
+
+            # Create a new list in the dictionary to store positions of the element
+            d[c]=list()
+
+            # Iterate over a range of positions where this element is found
+            for j in range(0,len(counter)-abs(diff)+1):
+
+              # Store the start and end positions of a segment containing this element
+              d[c].append(([counter[j],counter[j+abs(diff)-1]]))
+
+            # Increment the counter 'c' to prepare for the next genetic element
+            c+=1
+
+    # Check if there are no elements in the dictionary
+    if len(d)==0:
+        return 0
+    else:
+        # Initialize a list of elements to be combined
+
+        # Create a list called c_elements to store elements that will be combined.
+        # We initialize it by popping the first element from each list in the dictionary d.
+        c_elements=[d[i].pop(0) for i in range(len(d))]
+
+        # Define a function to calculate the distance between combined elements
+
+        # This function calculates the distance between elements in the combined list c_elements.
+        # It finds the minimum and maximum positions in each element and returns the range between them.
+        def check_distance(element):
+
+            # Find the minimum position of each element in the combined list
+            min_d=min([element[i][0] for i in range(len(element))])
+
+            # Find the maximum position of each element in the combined list
+            max_d=max([element[i][1] for i in range(len(element))])
+
+            # Calculate the distance by subtracting the minimum position from the maximum position and adding 1
+            return max_d - min_d + 1
+
+        # Calculate the initial minimum distance
+        min_distance = check_distance(c_elements)
+
+        # Continue until there are elements left in the dictionary
+        while any(len(d[i]) > 0 for i in range(len(d))):
+
+            # Initialize an empty list to store tuples
+            tuples=[]
+
+            # Iterate through the dictionary
+            for i in range(len(d)):
+
+                # Check if there are elements in the current dictionary entry
+                if d[i]:
+
+                    # If elements are present, append a tuple with the index and the first element from the list
+                    tuples.append([i, d[i][0]])
+
+            # Find the best combination of elements
+            # Initialize a list to store winning combinations of elements
+            winning_index=list() 
+
+            # Iterate through the tuples of dictionary indices and their respective elements
+            for el in tuples:
+
+                # Create a temporary copy of the combined elements list
+                temp=c_elements.copy() 
+
+                # Replace the element at the current index with the new element from the dictionary
+                temp[el[0]]=el[1]
+
+                # Calculate the distance of the updated combined elements and append it to the winning_index list
+                winning_index.append([el[0], check_distance(temp)])
+
+            # Select the combination with the smallest distance
+            index, new_min_distance = (sorted(winning_index, key=lambda x: x[1]))[0]
+
+            # Update the combined elements and minimum distance
+            # Replace the element at index 'index' in 'c_elements' with the first element from the list at 'd[index]'
+            c_elements[index] = d[index].pop(0)
+
+            # Check if the new minimum distance is smaller than the previous minimum distance
+            if new_min_distance < min_distance:
+
+              # If the new distance is smaller, update the minimum distance with the new value
+              min_distance = new_min_distance
+
+        # Return the minimum distance
+        return min_distance
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    n = int(input().strip())
+
+    gene = input()
+
+    result = steadyGene(gene)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
